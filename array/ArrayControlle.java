@@ -18,6 +18,9 @@ public class ArrayControlle {
     // 즉, 컬렉션 프레임워크를 이용해서 다량의 데이터들을 우리가 관리할 때
     // 가령 이 데이터들을 조작할 때 조금 더 편리하고 가독성있게 처리할 수 있도록 도와주는 역할을 한다.
     
+    // * 스트림(Stream)은 문자열화(Stringification)와는 다르다. 
+    //   스트림은 데이터를 일련의 연산을 통해 처리할 수 있도록 순차적으로 흐르게 하는 개념
+    
     public static void mian(String[] args){
 
         System.out.println(Arrays.toString(new int[]{4, 2, 2, 1, 3, 4}));
@@ -25,12 +28,30 @@ public class ArrayControlle {
 
     private static int[] solution(int[] arr){
 
+        // 개념 : 메서드 체이닝
+        // 장점 :  
+        //       1) 연속적인 연산: 데이터를 처리하는 여러 단계를 한 줄에 연속적으로 표현할 수 있습니다.
+        //       2) 불변성 유지: 각 단계에서 새로운 객체를 반환하는 경우, 원본 데이터의 불변성을 유지하면서 데이터 처리 작업을 수행할 수 있습니다.
+
         //distinct() : 스트림에서 중복된 요소를 제거하는 메서드. 이 메서드를 사용하면 배열의 중복 값을 제거할 수 있다.
         //배열중 Set은 중복을 허용하지 않는 컬렉션.
-        Integer[] arrayto = Arrays.stream(arr).boxed().distinct().toArray(Integer[]::new); //중복값 제거
-        Arrays.sort(arrayto, Collections.reverseOrder());                                  //내림차순 정렬 
-        int [] result = Arrays.stream(arrayto).mapToInt(Integer::intValue).toArray();      //int형 배열로 변경 후 반환할 결과 값.
+        Integer[] uniqueArr = Arrays.stream(arr).boxed().distinct().toArray(Integer[]::new); //중복값 제거
+        
+        // 코드해석
+        // 1) Arrays.stream(arr).boxed()
+        //    - Arrays.stream(arr) : 주어진 정수 배열 arr을 스트림으로 변환한다.
+        //    - .boxed()           : 기본형 int 배열을 참조형 Integer 객체 배열로 변환한다.
+        //                           이는 기본형 배열에서는 사용할 수 없는 메서드(ex : distinct(), sort())를 사용하기 위해 필요하다.
+        //                           즉, int 타입의 배열을 Integer 타입으로 변환하여 스트림의 메서드를 사용할 수 있게 해준다. 
+        
+        Arrays.sort(uniqueArr, Collections.reverseOrder());                                  //내림차순 정렬 
+        
+        // mapToInt(Integer::intValue): Integer 객체를 기본형 int로 매핑합니다. 이 메서드는 각 Integer 객체를 int로 변환합니다.
+        // toArray(): 최종적으로 스트림의 결과를 int 배열로 변환하여 반환합니다.
+        int [] result = Arrays.stream(uniqueArr).mapToInt(Integer::intValue).toArray();      //int형 배열로 변경 후 반환할 결과 값.
         return result;
+
+        // a :: b : 메서드 참조(Method Reference)를 사용하는 표현
     }
 }
 
