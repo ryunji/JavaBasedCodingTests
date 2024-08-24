@@ -1,12 +1,14 @@
 package Stack;
 
 import java.util.ArrayDeque;
+import java.util.Stack;
 
 public class ValidParentheses {
     
     private static boolean validParentheses(String params){
 
-        ArrayDeque<Character> stack = new ArrayDeque<>();
+        //ArrayDeque<Character> stack = new ArrayDeque<>();
+        Stack<Character> stack = new Stack<>();
         char[] pt = params.toCharArray();
         for(char c : pt){
 
